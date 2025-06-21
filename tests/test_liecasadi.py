@@ -2,8 +2,8 @@ import manifpy
 import numpy as np
 import pytest
 from scipy.spatial.transform import Rotation
-
-from liecasadi import SE3, SO3, SE3Tangent, SO3Tangent
+import casadi as cs
+from liecasadi import SE3, SO3, S1, SE3Tangent, SO3Tangent, S1Tangent
 
 # quat generation
 quat = (np.random.rand(4) - 0.5) * 5
@@ -110,10 +110,10 @@ manifSE3_2 = manifpy.SE3(pos2, quat2)
 mySE3_2 = SE3(pos=pos2, xyzw=quat2)
 
 
-# def test_inverse():
-assert (mySE3.inverse().transform() - manifSE3.inverse().transform()) == pytest.approx(
-    0.0, abs=1e-4
-)
+def test_inverse():
+    assert (mySE3.inverse().transform() - manifSE3.inverse().transform()) == pytest.approx(
+        0.0, abs=1e-4
+    )
 
 
 def test_mul():
@@ -148,3 +148,31 @@ def test_sub_SE3():
     assert (mySE3 - mySE3_2).exp().transform() - (
         manifSE3 - manifSE3_2
     ).exp().transform() == pytest.approx(0.0, abs=1e-4)
+
+
+# S1 objects
+S1_angle = (np.random.rand() - 0.5) * 2 * np.pi
+myS1 = S1(S1_angle)
+
+# S1Tangent objects
+S1_tangent_ang = (np.random.rand() - 0.5) * 2 * np.pi
+myS1Tang = S1Tangent(S1_tangent_ang)
+
+def test_identity():
+    assert S1.Identity().as_angle() == 0.0
+
+def test_mul():
+    a = S1(cs.pi / 4)
+    b = S1(cs.pi / 4)
+    c = a * b
+    assert float(c.as_angle()) == pytest.approx(float(cs.pi / 2))
+
+def test_sub_and_log_exp():
+    a = S1(cs.pi / 3)
+    b = S1(cs.pi / 6)
+    diff = a - b
+    rebuilt = diff.exp() * b
+    assert float(rebuilt.as_angle()) == pytest.approx(float(cs.pi / 3))
+
+    tangent = a.log()
+    assert float(tangent.exp().as_angle()) == pytest.approx(float(cs.pi / 3))
