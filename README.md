@@ -46,14 +46,16 @@ pip install "liecasadi @ git+https://github.com/ami-iit/lie-casadi.git"
 | --------- | ------------------ |
 | SO3       | 3D Rotations       |
 | SE3       | 3D Rigid Transform |
+| S1        | Circle (1D angle)  |
 
 ### 🚀 Operations
 
+
 Being:
 
-- $X, Y \in SO3, \ SE3$
+- $X, Y \in SO3, \ SE3, \ S1$
 
-- $w \in \text{SO3Tangent}, \ \text{SE3Tangent}$
+- $w \in \text{SO3Tangent}, \ \text{SE3Tangent}, \ \text{S1Tangent}$
 
 - $v \in \mathbb{R}^3$
 
