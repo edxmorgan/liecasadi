@@ -150,14 +150,6 @@ def test_sub_SE3():
     ).exp().transform() == pytest.approx(0.0, abs=1e-4)
 
 
-# S1 objects
-S1_angle = (np.random.rand() - 0.5) * 2 * np.pi
-myS1 = S1(S1_angle)
-
-# S1Tangent objects
-S1_tangent_ang = (np.random.rand() - 0.5) * 2 * np.pi
-myS1Tang = S1Tangent(S1_tangent_ang)
-
 def test_identity():
     assert S1.Identity().as_angle() == 0.0
 
