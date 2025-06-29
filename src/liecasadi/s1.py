@@ -75,6 +75,9 @@ class S1Tangent:
             return S1Tangent(self.val * scalar)
         raise RuntimeError("[S1Tangent: __mul__] Please multiply with a scalar.")
 
+    def __rmul__(self, scalar: float) -> "S1Tangent":
+        return self.__mul__(scalar)
+
     def value(self) -> Scalar:
         """Return the underlying scalar value."""
         return self.val
