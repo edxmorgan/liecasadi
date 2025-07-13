@@ -3,11 +3,11 @@ import casadi as cs
 
 from liecasadi.hints import Angle, Scalar
 
-
 def _wrap_to_pi(angle: Scalar) -> Scalar:
     """Wrap an angle to the range [-pi, pi]."""
-    return cs.fmod(angle + cs.pi, 2 * cs.pi) - cs.pi
-
+    s = cs.sin(angle)
+    c = cs.cos(angle)
+    return cs.atan2(s, c)
 
 @dataclasses.dataclass
 class S1:
